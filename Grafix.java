@@ -521,20 +521,31 @@ public class Grafix{
     }
     public void addBox(double x, double y, double z,double w,double h,double d){
 	LinkedList<Coor> vertices = new LinkedList<Coor>();
-	Coor c;
-	vertices.add(new Coor(x, y, z));
-	vertices.add(new Coor(x, y, z-d));
-	vertices.add(new Coor(x, y-h, z));
-	vertices.add(new Coor(x, y-h, z-d));
-	vertices.add(new Coor(x+w, y, z));
-	vertices.add(new Coor(x+w, y, z-d));
-	vertices.add(new Coor(x+w, y-h, z));
-	vertices.add(new Coor(x+w, y-h, z-d));
-	for(int i = 0; i < vertices.size(); i++){
-	    c = vertices.pop();
-	    addPoint(c);
-	    vertices.add(c);
-	}
+	Coor A = new Coor(x, y, z);
+	Coor B = new Coor(x, y, z-d);
+	Coor C = new Coor(x, y-h, z);
+	Coor D = new Coor(x, y-h, z-d);
+	Coor E = new Coor(x+w, y, z);
+	Coor F = new Coor(x+w, y, z-d);
+	Coor G = new Coor(x+w, y-h, z);
+	Coor H = new Coor(x+w, y-h, z-d);
+	//keep z constant
+	addTriangle(A, C, E);
+	addTriangle(B, D, F);
+	addTriangle(C, E, G);
+	addTriangle(D, F, H);
+	//keep y constant
+	addTriangle(A, B, E);
+	addTriangle(C, D, G);
+	addTriangle(B, E, F);	
+	addTriangle(D, G, H);
+	//keep x constant
+	addTriangle(A, B, C);
+	addTriangle(E, F, G);
+	addTriangle(B, C, D);
+	addTriangle(F, G, H);
+
+
     }
     public void addSphere(double cx, double cy, double cz, double r, int steps){
 	LinkedList<Coor> sphere = new LinkedList<Coor>();
@@ -589,12 +600,15 @@ public class Grafix{
 	p.addCoor(coors[0]);
 	addEdge(p);
     }
-    public void addTriangle(double x0, double y0, double z0, double x1, double y1, double z1, double x2, double y2, double z2){
+    public void addTriangle(Coor c0, Coor c1, Coor c2){
 	Coor[] coos = new Coor[3];
-	coos[0] = new Coor(x0, y0, z0);
-	coos[1] = new Coor(x1, y1, z1);
-	coos[2] = new Coor(x2, y2, z2);
+	coos[0] = c0;
+	coos[1] = c1;
+	coos[2] = c2;
 	addPolygon(coos);
+    }
+    public void addTriangle(double x0, double y0, double z0, double x1, double y1, double z1, double x2, double y2, double z2){
+	addTriangle(new Coor(x0, y0, z0), new Coor(x1, y1, z1), new Coor(x2, y2, z2));
     }
     //Write function copies the pixels to image file
     public void write(String name){

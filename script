@@ -1,3 +1,7 @@
-triangle
-100 100 0 100 200 0 200 200 0
+box
+200 200 0 100 100 100
+ident
+rotate
+z 90
+apply
 display
