@@ -553,32 +553,35 @@ public class Grafix{
 	double theta;
 	double phi;
 	for(int i = 0; i <= steps; i++){
-	    phi = Math.PI*i/steps;
+	    theta = Math.PI*i/steps;
 	    for(int j = 0; j <= steps; j++){
-		theta = 2*Math.PI*j/steps;
+		phi = 2*Math.PI*j/steps;
 		sphere.add(new Coor(r*Math.cos(theta)+cx,
 				    r*Math.sin(theta)*Math.cos(phi)+cy,
 				    r*Math.sin(theta)*Math.sin(phi)+cz));
-		System.out.println("Theta: "+theta+"Phi: "+phi);
 	    }
 	}
-	LinkedList<Coor> sphere2 = sphere;
-	LinkedList<Coor> sphere3 = sphere;
+	LinkedList<Coor> sphere2 = new LinkedList<Coor>(sphere);
+	LinkedList<Coor> sphere3 = new LinkedList<Coor>(sphere);
 	Coor v1;
 	Coor v2;
 	Coor v3;
-	sphere2.add(sphere2.poll());//sphere2 is one ahead of sphere
+	v1 = sphere2.poll();
+	sphere2.add(v1);//sphere2 is one ahead of sphere
 	for(int i = 0; i < steps; i++){
-	    sphere3.add(sphere3.poll());
+	    v1 = sphere3.poll();	    
+	    sphere3.add(v1);
 	}
 	for(int i = 0; i < steps*steps; i++){
-	    v1 = sphere.poll();
-	    v2 = sphere2.poll();
-	    v3 = sphere3.poll();
-	    addTriangle(v1, v2, v3);
-	    sphere.add(v1);
-	    sphere2.add(v2);
-	    sphere3.add(v3);
+	    if((i+1)%steps!=0){
+		v1 = sphere.poll();
+		v2 = sphere2.poll();
+		v3 = sphere3.poll();
+		addTriangle(v1, v2, v3);
+		sphere.add(v1);
+		sphere2.add(v2);
+		sphere3.add(v3);
+	    }
 	}
     }
     public void addTorus(double cx, double cy, double cz, double r1, double r2, int steps){

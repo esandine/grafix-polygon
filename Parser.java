@@ -69,7 +69,7 @@ public class Parser{
 		    g.printEdgeList();
                 }else if(command.equals("sphere")){
 		    args = new Scanner(s.nextLine());
-                    g.addSphere(args.nextDouble(),args.nextDouble(),args.nextDouble(),args.nextDouble(),20);
+                    g.addSphere(args.nextDouble(),args.nextDouble(),args.nextDouble(),args.nextDouble(),10);
 		}else if(command.equals("torus")){
                     args = new Scanner(s.nextLine());
                     g.addTorus(args.nextDouble(),args.nextDouble(),args.nextDouble(),args.nextDouble(),args.nextDouble(),100);
