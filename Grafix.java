@@ -632,28 +632,35 @@ public class Grafix{
 	}
 	LinkedList<Coor> sphere2 = new LinkedList<Coor>(sphere);
 	LinkedList<Coor> sphere3 = new LinkedList<Coor>(sphere);
+	LinkedList<Coor> sphere4 = new LinkedList<Coor>(sphere);
 	Coor v1;
 	Coor v2;
 	Coor v3;
+	Coor v4;
 	for(int i = 0; i < steps+1; i++){
-	    v1 = sphere2.poll();
+	    v1 = sphere3.poll();
 	    sphere2.add(v1);//sphere2 is one ahead of sphere
-	    v1 = sphere3.poll();	    
+	    v1 = sphere4.poll();	    
 	    sphere3.add(v1);
 	}
-	v1 = sphere3.poll();
-	sphere3.add(v1);
-	for(int i = 0; i < 1/*(steps+1)*2*/; i++){
+	v1 = sphere2.poll();
+	sphere2.add(v1);
+	v1 = sphere4.poll();
+	sphere4.add(v1);
+	for(int i = 0; i <steps*steps-1; i++){
 		v1 = sphere.poll();
 		v2 = sphere2.poll();
 		v3 = sphere3.poll();
+		v4 = sphere4.poll();
 		//addPoint(v1);
 		//addPoint(v2);
 		//addPoint(v3);
 		addTriangle(v1, v2, v3);
+		addTriangle(v3, v4, v2);
 		sphere.add(v1);
 		sphere2.add(v2);
 		sphere3.add(v3);
+		sphere4.add(v4);
 	}
 	printEdgeList();
     }
