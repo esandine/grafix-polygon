@@ -67,6 +67,8 @@ public class Parser{
                     g.addBox(args.nextDouble(),args.nextDouble(),args.nextDouble(),args.nextDouble(),args.nextDouble(),args.nextDouble());
 		}else if(command.equals("print")){
 		    g.printEdgeList();
+		}else if(command.equals("printtris")){
+		    g.printTriangles();
                 }else if(command.equals("sphere")){
 		    args = new Scanner(s.nextLine());
                     g.addSphere(args.nextDouble(),args.nextDouble(),args.nextDouble(),args.nextDouble(),10);

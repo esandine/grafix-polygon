@@ -49,6 +49,9 @@ public class Coor{
     public Coor(){
 	this(1,1,1);
     }
+    public Coor copyCoor(){
+	return new Coor(getX(), getY(), getZ());
+    }
     public String toString(){
 	return ""+getX()+" "+
 	    getY()+" "+

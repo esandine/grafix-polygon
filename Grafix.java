@@ -12,6 +12,7 @@ public class Grafix{
     private int height;
     private Pixel[][] data;
     private LinkedList<PointList> edges;
+    private LinkedList<Coor[]> triangles;
     public double[][] transformation;
     public Grafix(int width, int height){
 	setWidth(width);
@@ -19,6 +20,7 @@ public class Grafix{
 	data = new Pixel[width][height];
 	resetPixels();
 	edges = new LinkedList<PointList>();
+	triangles = new LinkedList<Coor[]>();
 	setIdentityMatrix();
     }
     public Grafix(){
@@ -56,7 +58,7 @@ public class Grafix{
     public void resetPixels(){
 	for(int i = 0; i< width; i++){
             for(int j = 0; j< height; j++){
-                data[i][j]=new Pixel(100,100,100);
+                data[i][j]=new Pixel(0,0,0);
             }
         }
     }
@@ -99,6 +101,25 @@ public class Grafix{
 	for(int i = 0; i < 4; i++){
             System.out.println(rows[i]);
         }
+    }
+    //printTriangles prints out all of the triangles
+    public void printTriangles(){
+	String retstr = "";
+	Coor[] current;
+	for(int j = 0; j < triangles.size(); j ++){
+	    current = triangles.poll();
+	    triangles.add(current);
+	    retstr+='[';
+	    for(int i = 0; i<3; i++){
+		retstr+="("+current[i].getX()+
+		    ","+current[i].getY()+
+		    ","+current[i].getZ()+")";
+		if(i<2)
+		    retstr+=",";
+	    }
+	    retstr+= "] ";
+	}
+	System.out.println(retstr);
     }
     //getData converts all of the pixel data to a string
     public String printData(){
@@ -253,6 +274,16 @@ public class Grafix{
 	    writeEdge(edge, color);
 	    i--;
 	}
+	Coor[] triangle;
+	i = triangles.size();
+	while(i>0){
+	    triangle = triangles.poll();
+	    triangles.add(triangle);
+	    bresLine(triangle[0],triangle[1],color);
+	    bresLine(triangle[1],triangle[2],color);
+	    bresLine(triangle[2],triangle[0],color);
+	    i--;
+	}
     }
 
     //Matrix functions
@@ -385,6 +416,7 @@ public class Grafix{
     public void applyTransformation(){
 	double[][] mat  = transformation;
 	PointList points;
+	Coor[] verts;
 	Coor point;
 	Coor newpoint;
 	for(int i = 0; i<edges.size(); i++){
@@ -396,6 +428,33 @@ public class Grafix{
 		    newpoint.setX(mat[0][0]*point.getX()+
 			       mat[0][1]*point.getY()+
 			       mat[0][2]*point.getZ()+
+			       mat[0][3]*point.getL());
+		    newpoint.setY(mat[1][0]*point.getX()+
+			       mat[1][1]*point.getY()+
+			       mat[1][2]*point.getZ()+
+			       mat[1][3]*point.getL());
+		    newpoint.setZ(mat[2][0]*point.getX()+
+			       mat[2][1]*point.getY()+
+			       mat[2][2]*point.getZ()+
+				  mat[2][3]*point.getL());
+		    point.setL(mat[3][0]*point.getX()+
+			       mat[3][1]*point.getY()+
+			       mat[3][2]*point.getZ()+
+			       mat[3][3]*point.getL());
+		    point.setX(newpoint.getX());
+		    point.setY(newpoint.getY());
+		    point.setZ(newpoint.getZ());
+		}
+	}
+	for(int k = 0; k<triangles.size(); k++){
+		verts=triangles.poll();
+		triangles.add(verts);
+		for(int l = 0; l < verts.length; l++){
+		    point = verts[l];
+		    newpoint = new Coor();
+		    newpoint.setX(mat[0][0]*point.getX()+
+			       mat[0][1]*point.getY()+
+				  mat[0][2]*point.getZ()+
 			       mat[0][3]*point.getL());
 		    newpoint.setY(mat[1][0]*point.getX()+
 			       mat[1][1]*point.getY()+
@@ -529,7 +588,17 @@ public class Grafix{
 	Coor F = new Coor(x+w, y, z-d);
 	Coor G = new Coor(x+w, y-h, z);
 	Coor H = new Coor(x+w, y-h, z-d);
-	//keep z constant
+	addPoint(A);
+	addPoint(B);
+	addPoint(C);
+	addPoint(D);
+	addPoint(E);
+	addPoint(F);
+	addPoint(G);
+	addPoint(H);
+	System.out.println(A);
+	System.out.println(B);
+	System.out.println(D);
 	addTriangle(A, B, D);
 	addTriangle(D, C, A);
 	addTriangle(C, D, H);
@@ -545,7 +614,7 @@ public class Grafix{
 	addTriangle(A, C, G);
 	addTriangle(G, E, A);
 
-
+       
     }
     public void addSphere(double cx, double cy, double cz, double r, int steps){
 	LinkedList<Coor> sphere = new LinkedList<Coor>();
@@ -566,23 +635,27 @@ public class Grafix{
 	Coor v1;
 	Coor v2;
 	Coor v3;
-	v1 = sphere2.poll();
-	sphere2.add(v1);//sphere2 is one ahead of sphere
-	for(int i = 0; i < steps; i++){
+	for(int i = 0; i < steps+1; i++){
+	    v1 = sphere2.poll();
+	    sphere2.add(v1);//sphere2 is one ahead of sphere
 	    v1 = sphere3.poll();	    
 	    sphere3.add(v1);
 	}
-	for(int i = 0; i < steps*steps; i++){
-	    if((i+1)%steps!=0){
+	v1 = sphere3.poll();
+	sphere3.add(v1);
+	for(int i = 0; i < 1/*(steps+1)*2*/; i++){
 		v1 = sphere.poll();
 		v2 = sphere2.poll();
 		v3 = sphere3.poll();
+		//addPoint(v1);
+		//addPoint(v2);
+		//addPoint(v3);
 		addTriangle(v1, v2, v3);
 		sphere.add(v1);
 		sphere2.add(v2);
 		sphere3.add(v3);
-	    }
 	}
+	printEdgeList();
     }
     public void addTorus(double cx, double cy, double cz, double r1, double r2, int steps){
         LinkedList<Coor> torus = new LinkedList<Coor>();
@@ -607,20 +680,19 @@ public class Grafix{
     }
 
     //polygons start here
-    public void addPolygon(Coor[] coors){
-	PointList p = new PointList();
-	for(int i = 0; i < coors.length; i++){
-	    p.addCoor(coors[i]);
-	}
-	p.addCoor(coors[0]);
-	addEdge(p);
-    }
+    /*public void addPolygon(Coor[] coors){
+
+	addPo(p);
+	}*/
     public void addTriangle(Coor c0, Coor c1, Coor c2){
 	Coor[] coos = new Coor[3];
-	coos[0] = c0;
-	coos[1] = c1;
-	coos[2] = c2;
-	addPolygon(coos);
+	coos[0] = c0.copyCoor();
+	coos[1] = c1.copyCoor();
+	coos[2] = c2.copyCoor();
+	for(int i = 0; i < 3; i++){
+	    System.out.println(coos[i]);
+	}
+	triangles.add(coos);
     }
     public void addTriangle(double x0, double y0, double z0, double x1, double y1, double z1, double x2, double y2, double z2){
 	addTriangle(new Coor(x0, y0, z0), new Coor(x1, y1, z1), new Coor(x2, y2, z2));
