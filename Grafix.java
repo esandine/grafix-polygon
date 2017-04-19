@@ -628,9 +628,9 @@ public class Grafix{
 	Coor v4;
 	for(int i = 0; i < steps+1; i++){
 	    v1 = sphere3.poll();
-	    sphere2.add(v1);//sphere2 is one ahead of sphere
+	    sphere3.add(v1);//sphere2 is one ahead of sphere
 	    v1 = sphere4.poll();	    
-	    sphere3.add(v1);
+	    sphere4.add(v1);
 	}
 	v1 = sphere2.poll();
 	sphere2.add(v1);
@@ -684,7 +684,7 @@ public class Grafix{
 	torus2.add(v1);
 	v1 = torus4.poll();
 	torus4.add(v1);
-	for(int i = 0; i <steps*steps-1; i++){
+	for(int i = 0; i <steps*steps; i++){
 		v1 = torus.poll();
 		v2 = torus2.poll();
 		v3 = torus3.poll();
