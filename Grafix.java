@@ -644,8 +644,8 @@ public class Grafix{
 		//addPoint(v1);
 		//addPoint(v2);
 		//addPoint(v3);
-		addTriangle(v1, v2, v3);
-		addTriangle(v3, v4, v2);
+		addTriangle(v1, v2, v4);
+		addTriangle(v4, v3, v1);
 		sphere.add(v1);
 		sphere2.add(v2);
 		sphere3.add(v3);
@@ -680,7 +680,6 @@ public class Grafix{
 	double v2y = tri[2].getY()-tri[0].getY();
 	double v3z = v1x*v2y-v1y*v2x;
 	System.out.println(v3z);
-	//return true;
 	return v3z>=0;
     }
     //polygons start here
