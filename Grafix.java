@@ -664,7 +664,6 @@ public class Grafix{
                 torus.add(new Coor(Math.cos(phi)*(r2*Math.cos(theta)+r1)+cx,
                                     r2*Math.sin(theta)+cy,
 				   -Math.sin(phi)*(r2*Math.cos(theta)+r1)+cz));
-                System.out.println("Theta: "+theta+"Phi: "+phi);
             }
         }
 	LinkedList<Coor> torus2 = new LinkedList<Coor>(torus);
@@ -704,7 +703,6 @@ public class Grafix{
 	double v2x = tri[2].getX()-tri[0].getX();
 	double v2y = tri[2].getY()-tri[0].getY();
 	double v3z = v1x*v2y-v1y*v2x;
-	System.out.println(v3z);
 	return v3z>=0;
     }
     //polygons start here
