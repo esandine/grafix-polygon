@@ -279,9 +279,11 @@ public class Grafix{
 	while(i>0){
 	    triangle = triangles.poll();
 	    triangles.add(triangle);
-	    bresLine(triangle[0],triangle[1],color);
-	    bresLine(triangle[1],triangle[2],color);
-	    bresLine(triangle[2],triangle[0],color);
+	    if(checkCull(triangle)){
+		bresLine(triangle[0],triangle[1],color);
+		bresLine(triangle[1],triangle[2],color);
+		bresLine(triangle[2],triangle[0],color);
+	    }
 	    i--;
 	}
     }
@@ -588,29 +590,16 @@ public class Grafix{
 	Coor F = new Coor(x+w, y, z-d);
 	Coor G = new Coor(x+w, y-h, z);
 	Coor H = new Coor(x+w, y-h, z-d);
-	addPoint(A);
-	addPoint(B);
-	addPoint(C);
-	addPoint(D);
-	addPoint(E);
-	addPoint(F);
-	addPoint(G);
-	addPoint(H);
-	System.out.println(A);
-	System.out.println(B);
-	System.out.println(D);
 	addTriangle(A, B, D);
 	addTriangle(D, C, A);
 	addTriangle(C, D, H);
 	addTriangle(H, G, C);
-	//keep y constant
 	addTriangle(G, H, F);
 	addTriangle(F, E, G);
 	addTriangle(E, F, B);	
-	addTriangle(B, A, E);
-	//keep x constant
-	addTriangle(A, B, H);
-	addTriangle(H, F, B);
+	addTriangle(B, A, E);	
+	addTriangle(B, F, H);
+	addTriangle(H, D, B);
 	addTriangle(A, C, G);
 	addTriangle(G, E, A);
 
@@ -662,7 +651,6 @@ public class Grafix{
 		sphere3.add(v3);
 		sphere4.add(v4);
 	}
-	printEdgeList();
     }
     public void addTorus(double cx, double cy, double cz, double r1, double r2, int steps){
         LinkedList<Coor> torus = new LinkedList<Coor>();
@@ -685,7 +673,16 @@ public class Grafix{
             torus.add(c);
         }
     }
-
+    public boolean checkCull(Coor[] tri){
+	double v1x = tri[1].getX()-tri[0].getX();
+	double v1y = tri[1].getY()-tri[0].getY();
+	double v2x = tri[2].getX()-tri[0].getX();
+	double v2y = tri[2].getY()-tri[0].getY();
+	double v3z = v1x*v2y-v1y*v2x;
+	System.out.println(v3z);
+	//return true;
+	return v3z>=0;
+    }
     //polygons start here
     /*public void addPolygon(Coor[] coors){
 
@@ -696,9 +693,6 @@ public class Grafix{
 	coos[0] = c0.copyCoor();
 	coos[1] = c1.copyCoor();
 	coos[2] = c2.copyCoor();
-	for(int i = 0; i < 3; i++){
-	    System.out.println(coos[i]);
-	}
 	triangles.add(coos);
     }
     public void addTriangle(double x0, double y0, double z0, double x1, double y1, double z1, double x2, double y2, double z2){
