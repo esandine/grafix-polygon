@@ -74,7 +74,7 @@ public class Parser{
                     g.addSphere(args.nextDouble(),args.nextDouble(),args.nextDouble(),args.nextDouble(),10);
 		}else if(command.equals("torus")){
                     args = new Scanner(s.nextLine());
-                    g.addTorus(args.nextDouble(),args.nextDouble(),args.nextDouble(),args.nextDouble(),args.nextDouble(),100);
+		    g.addTorus(args.nextDouble(),args.nextDouble(),args.nextDouble(),args.nextDouble(),args.nextDouble(),10);
 		}else if(command.equals("triangle")){
                     args = new Scanner(s.nextLine());
                     g.addTriangle(args.nextDouble(),args.nextDouble(),args.nextDouble(),args.nextDouble(),args.nextDouble(),args.nextDouble(),args.nextDouble(),args.nextDouble(),args.nextDouble());

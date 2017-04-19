@@ -667,11 +667,36 @@ public class Grafix{
                 System.out.println("Theta: "+theta+"Phi: "+phi);
             }
         }
-        for(int i = 0; i < torus.size(); i++){
-            c = torus.pop();
-            addPoint(c);
-            torus.add(c);
+	LinkedList<Coor> torus2 = new LinkedList<Coor>(torus);
+	LinkedList<Coor> torus3 = new LinkedList<Coor>(torus);
+        LinkedList<Coor> torus4 = new LinkedList<Coor>(torus);
+	Coor v1;
+	Coor v2;
+	Coor v3;
+	Coor v4;
+	for(int i = 0; i < steps+1; i++){
+	    v1 = torus3.poll();
+	    torus3.add(v1);//sphere2 is one ahead of sphere
+	    v1 = torus4.poll();	    
+	    torus4.add(v1);
+	}
+	v1 = torus2.poll();
+	torus2.add(v1);
+	v1 = torus4.poll();
+	torus4.add(v1);
+	for(int i = 0; i <steps*steps-1; i++){
+		v1 = torus.poll();
+		v2 = torus2.poll();
+		v3 = torus3.poll();
+		v4 = torus4.poll();
+		addTriangle(v1, v2, v4);
+		addTriangle(v4, v3, v1);
+		torus.add(v1);
+		torus2.add(v2);
+		torus3.add(v3);
+		torus4.add(v4);
         }
+	
     }
     public boolean checkCull(Coor[] tri){
 	double v1x = tri[1].getX()-tri[0].getX();

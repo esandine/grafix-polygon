@@ -1,10 +1,4 @@
-sphere
-200 200 200 50
-rotate
-y 20
-rotate
-x 20
-rotate
-z 20
+torus
+200 200 200 100 75
 apply
 display
